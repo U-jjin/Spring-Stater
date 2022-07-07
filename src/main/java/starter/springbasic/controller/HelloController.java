@@ -3,7 +3,6 @@ package starter.springbasic.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -23,7 +22,7 @@ public class HelloController {
     }
 
     //API
-    //RequestBody -> html의 body부를 직접 넣어 주겠다는 의미
+    //ResponseBody -> http의 body부를 직접 넣어 주겠다는 의미
     @GetMapping("hello-string")
     @ResponseBody
     public String helloString(@RequestParam("name") String name){
