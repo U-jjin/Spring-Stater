@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import starter.springbasic.domain.Member;
 import starter.springbasic.service.MemberService;
 
+import java.sql.SQLException;
 import java.util.List;
 
 //Controller 어노테이션을 생성되면 멤버컨트롤러가 스프링 컨테이너에 생성하여 관리하게 됨.
@@ -28,7 +29,7 @@ public class MemberController {
         return "members/createMemberForm";
     }
     @PostMapping("members/new")
-    public String create(MemberForm form){
+    public String create(MemberForm form) throws SQLException {
         Member member = new Member();
         member.setName(form.getName());
         memberService.join(member);

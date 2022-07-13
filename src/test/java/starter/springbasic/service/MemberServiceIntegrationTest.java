@@ -3,30 +3,26 @@ package starter.springbasic.service;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 import starter.springbasic.domain.Member;
+import starter.springbasic.repository.MemberRepository;
 import starter.springbasic.repository.MemoryMemberRepository;
 
 import java.sql.SQLException;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class MemberServiceTest {
-    MemberService memberService;
-    MemoryMemberRepository memberRepository;
+@SpringBootTest
+@Transactional
+class MemberServiceIntegrationTest {
+    @Autowired MemberService memberService;
+    @Autowired MemberRepository memberRepository;
 
-    @BeforeEach
-    public void beforeEach(){
-        memberRepository = new MemoryMemberRepository();
-        memberService = new MemberService(memberRepository);
-    }
-
-    @AfterEach
-    public void afterEach(){
-        memberRepository.clearStore();
-    }
     @Test
-    void join() throws SQLException {
+    void join() throws Exception {
         //given
         Member member = new Member();
         member.setName("hello");
@@ -53,14 +49,6 @@ class MemberServiceTest {
         //해당 예외가 터져야한다.
         IllegalStateException e = assertThrows(IllegalStateException.class, () -> memberService.join(member2));
         assertThat(e).isEqualTo("이미 존재하는 회원입니다.");
-
-//        이렇게 테스트할때 try catch문을 하기엔 복잡
-//        try{
-//            memberService.join(member2);
-//            fail();
-//        }catch(IllegalStateException e){
-//            assertThat(e.getMessage()).isEqualTo("이미 존재하는 회원입니다.");
-//        }
 
     }
 

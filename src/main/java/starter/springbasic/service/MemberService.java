@@ -1,11 +1,10 @@
 package starter.springbasic.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import starter.springbasic.domain.Member;
 import starter.springbasic.repository.MemberRepository;
-import starter.springbasic.repository.MemoryMemberRepository;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,12 +17,21 @@ public class MemberService {
 
     //    회원가입
 //ctrl +alt +v 단축키 최고 +m은 메소드
-    public Long join(Member member ){
-        //같은 이름이 있는 중복 회원X
-        validateDuplicateMember(member);  //중복 회원 검증
-        memberRepository.save(member);
+    public Long join(Member member ) throws SQLException {
+        long start = System.currentTimeMillis();
 
-        return member.getId();
+        try{
+            //같은 이름이 있는 중복 회원X
+            validateDuplicateMember(member);  //중복 회원 검증
+            memberRepository.save(member);
+
+            return member.getId();
+        }finally{
+            long finish = System.currentTimeMillis();
+            long timeMs = finish-start;
+            System.out.println("join= "+timeMs+"ms");
+        }
+
     }
 
     private void validateDuplicateMember(Member member) {
@@ -36,8 +44,16 @@ public class MemberService {
      전체 회원 조회
      */
     public List<Member> findMembers(){
-        return memberRepository.findAll();
+        long start = System.currentTimeMillis();
+        try {
+            return memberRepository.findAll();
+        } finally {
+            long finish = System.currentTimeMillis();
+            long timeMs = finish - start;
+            System.out.println("findMembers " + timeMs + "ms");
+        }
     }
+
 
     public Optional<Member> findOne(Long memberId){
         return memberRepository.findById(memberId);
