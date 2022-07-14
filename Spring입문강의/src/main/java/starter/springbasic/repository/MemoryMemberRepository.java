@@ -1,5 +1,4 @@
 package starter.springbasic.repository;
-import org.springframework.stereotype.Repository;
 import starter.springbasic.domain.Member;
 import java.util.*;
 
